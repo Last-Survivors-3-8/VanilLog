@@ -26,6 +26,10 @@ class AuthService {
         throw error;
       });
   }
+  getCurrentUserToken() {
+    const auth = getAuth(firebaseApp);
+    return auth.currentUser.getIdToken(true);
+  }
 }
 
 export default AuthService;
