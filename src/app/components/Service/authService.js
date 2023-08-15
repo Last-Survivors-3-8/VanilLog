@@ -1,5 +1,5 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import firebaseApp from './firebase';
+import firebaseApp from '../Firebase/firebase';
 
 class AuthService {
   login() {

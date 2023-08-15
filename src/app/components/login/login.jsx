@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import AuthService from '../authService';
+import AuthService from '../Service/authService';
 
 const authService = new AuthService();
 
