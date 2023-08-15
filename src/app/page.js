@@ -1,12 +1,9 @@
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import Login from './components/login/login';
 
 export default function Home() {
   return (
     <div>
-      <Button variant='contained' color='primary'>
-        Hello World
-      </Button>
+      <Login google={true} />
     </div>
   );
 }
