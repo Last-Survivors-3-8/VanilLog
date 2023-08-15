@@ -41,19 +41,32 @@ export default function Home() {
     }
   };
 
+  const logout = () => {
+    const auth = getAuth(firebaseApp);
+    auth
+      .signOut()
+      .then(() => {
+        console.log('User signed out.');
+        setUserInfo(null);
+      })
+      .catch((error) => {
+        console.error('Sign out error:', error);
+      });
+  };
+
   return (
     <div>
       <div>메인화면</div>
-      {isLoggedIn && (
+      {isLoggedIn ? (
         <div>
           {userInfo ? (
             <div>{userInfo.uid}님 환영합니다!</div>
           ) : (
             <button onClick={fetchUserInfo}>사용자 정보 가져오기</button>
           )}
+          <button onClick={logout}>Logout</button>
         </div>
-      )}
-      {!isLoggedIn && (
+      ) : (
         <Link href='/auth/login'>
           <button>로그인</button>
         </Link>
