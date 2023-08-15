@@ -1,5 +1,12 @@
-import { useAuthUser } from 'next-firebase-auth';
+import Link from 'next/link';
 
 export default function Home() {
-  return <div>메인화면</div>;
+  return (
+    <div>
+      <div>메인화면</div>
+      <Link href='/auth/login'>
+        <button>로그인</button>
+      </Link>
+    </div>
+  );
 }
