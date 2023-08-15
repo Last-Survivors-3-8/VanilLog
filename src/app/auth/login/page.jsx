@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import Link from 'next/link';
 import { onLogin } from '../../components/Login/login';
 import AuthService from '../../components/Service/authService';
 
@@ -21,14 +22,28 @@ function LoginPage() {
       });
   }, []);
   return (
-    <>
-      <div className='text-center'>
-        <span className='text-logo font-sans font-bold text-9xl'>vanilLog</span>
+    <div className='text-center font-sans'>
+      <div className='mt-32 mb-20'>
+        <Link href='/'>
+          <span className='text-9xl text-logo font-bold'>vanilLog</span>
+        </Link>
       </div>
-      <div className='text-center'>
-        <button onClick={onLogin}>google login</button>
+      <div>
+        <button
+          onClick={onLogin}
+          className='text-xl text-white font-bold bg-[#0044ff] rounded-lg hover:bg-[#0000ff] py-2 px-8'
+        >
+          google login
+        </button>
       </div>
-    </>
+      <div className='my-8'>
+        <Link href='/'>
+          <button className='underline hover:font-bold'>
+            비회원으로 둘러보기
+          </button>
+        </Link>
+      </div>
+    </div>
   );
 }
 
