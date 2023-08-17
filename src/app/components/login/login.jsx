@@ -1,13 +1,9 @@
 'use client';
-
-import AuthService from '../Service/authService';
-import Router from 'next/router';
-
-const authService = new AuthService();
+import authService from '../../components/Service/authService';
 
 export const onLogin = () => {
   authService.login().catch((error) => {
-    console.error('Error during login:', error);
+    error;
   });
 };
 

@@ -2,75 +2,44 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getAuth } from 'firebase/auth';
-import firebaseApp from './components/Firebase/firebase';
-import axios from 'axios';
+import authService from './components/Service/authService';
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const auth = getAuth(firebaseApp);
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsLoggedIn(!!user);
+    const unsubscribe = authService.auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
     });
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
-  const fetchUserInfo = () => {
-    const auth = getAuth(firebaseApp);
-    if (auth.currentUser) {
-      auth.currentUser.getIdToken(true).then((idToken) => {
-        console.log('Retrieved idToken:', idToken);
-        axios
-          .get('http://localhost:3001/getUserInfo', {
-            headers: {
-              Authorization: 'Bearer ' + idToken,
-            },
-          })
-          .then((response) => {
-            setUserInfo(response.data);
-          })
-          .catch((error) => {
-            console.error('API 요청 중 에러 발생:', error);
-          });
-      });
-    } else {
-      console.error('로그인한 사용자가 아닙니다.');
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      setUser(null);
+    } catch (err) {
+      setError(err.message);
     }
-  };
-
-  const logout = () => {
-    const auth = getAuth(firebaseApp);
-    auth
-      .signOut()
-      .then(() => {
-        console.log('User signed out.');
-        setUserInfo(null);
-      })
-      .catch((error) => {
-        console.error('Sign out error:', error);
-      });
   };
 
   return (
     <div>
       <div>메인화면</div>
-      {isLoggedIn ? (
+      {user ? (
         <div>
-          {userInfo ? (
-            <div>{userInfo.uid}님 환영합니다!</div>
-          ) : (
-            <button onClick={fetchUserInfo}>사용자 정보 가져오기</button>
-          )}
-          <button onClick={logout}>Logout</button>
+          {user.displayName}님 환영합니다!
+          <button onClick={handleLogout}>Logout</button>
         </div>
       ) : (
-        <Link href='/auth/login'>
-          <button>로그인</button>
-        </Link>
+        <Link href='/auth/login'>로그인</Link>
       )}
+      {error && <div className='error'>{error}</div>}
     </div>
   );
 }

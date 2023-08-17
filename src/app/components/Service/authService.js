@@ -1,35 +1,57 @@
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
-} from 'firebase/auth';
-import firebaseApp from '../Firebase/firebase';
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { auth } from '@src/app/components/Firebase/firebase';
+import axios from 'axios';
 
 class AuthService {
-  login() {
-    console.log('Attempting login...');
-    const auth = getAuth(firebaseApp);
-    const provider = new GoogleAuthProvider();
-    return signInWithRedirect(auth, provider);
+  constructor() {
+    this.auth = auth;
   }
-  getLoginResult() {
-    console.log('Fetching login result...');
-    const auth = getAuth(firebaseApp);
-    return getRedirectResult(auth)
-      .then((result) => {
-        console.log('Login result received:', result);
-        return result;
-      })
-      .catch((error) => {
-        console.error('Error getting login result:', error);
-        throw error;
+  isAuthenticated() {
+    return !!this.auth.currentUser;
+  }
+  async login() {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithRedirect(this.auth, provider);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async logout() {
+    try {
+      await this.auth.signOut();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async _saveUIDToDatabase(uid) {
+    try {
+      await axios.post('/api/v1/auth/saveUid', { uid: uid });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserInfo() {
+    try {
+      if (!this.auth.currentUser)
+        throw new Error('로그인한 사용자가 아닙니다.');
+
+      const idToken = await this.auth.currentUser.getIdToken(true);
+
+      const response = await axios.get('/api/v1/auth/getUserInfo', {
+        headers: {
+          Authorization: 'Bearer ' + idToken,
+        },
       });
-  }
-  getCurrentUserToken() {
-    const auth = getAuth(firebaseApp);
-    return auth.currentUser.getIdToken(true);
+      return response.data;
+    } catch (error) {
+      throw new Error('사용자 정보를 가져오는 중 문제가 발생했습니다.');
+    }
   }
 }
 
-export default AuthService;
+const authService = new AuthService();
+export default authService;
