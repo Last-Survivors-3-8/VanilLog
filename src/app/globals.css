@@ -10,8 +10,3 @@
   font-weight: normal;
   font-style: normal;
 }
-
-::selection {
-  background-color: #0040ff;
-  color: white;
-}
