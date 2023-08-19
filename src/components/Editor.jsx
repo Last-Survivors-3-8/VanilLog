@@ -20,7 +20,7 @@ function Editor({ title }) {
           class: ImageTool,
           config: {
             endpoints: {
-              byFile: 'http://localhost:3000/api/image/uploadFile',
+              byFile: 'http://localhost:3000/api/v1/image/uploadFile',
             },
             types: 'image/*',
             captionPlaceholder: 'Enter caption',
@@ -57,7 +57,7 @@ function Editor({ title }) {
           };
 
           axios
-            .post('/api/posts', postData)
+            .post('/api/v1/posts', postData)
             .then((response) => {
               router.push('/');
             })
