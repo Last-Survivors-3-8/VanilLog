@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PostItem } from './PostItem';
 
-function PostList({ loggedInUserId, blogUserId }) {
+function PostList({ loggedInUserId, userId }) {
   const params = useSearchParams();
 
   const page = params.get('page') || 1;
@@ -21,27 +21,23 @@ function PostList({ loggedInUserId, blogUserId }) {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/v1/posts', {
-          params: { blogUserId, page, limit },
+          params: { userId, page, limit },
         });
 
-        if (response.data.status === 'success') {
-          setPosts(response.data.data);
-          setTotalPosts(response.data.totalPosts);
+        if (response.data.status !== 'success') {
+          setError(response.data.message);
+          return;
         }
 
-        if (response.data.status === '401') {
-          setError(response.data.message);
-        }
-        if (response.data.status === '400') {
-          setError(response.data.message);
-        }
+        setPosts(response.data.data);
+        setTotalPosts(response.data.totalPosts);
       } catch (e) {
         setError('포스트를 불러오는 중 문제가 발생했습니다.');
       }
     };
 
     fetchData();
-  }, [blogUserId, page, limit]);
+  }, [userId, page, limit]);
 
   const totalPage = Math.ceil(totalPosts / limit);
   const pageNumbers = [];
@@ -63,14 +59,6 @@ function PostList({ loggedInUserId, blogUserId }) {
       <div className='flex flex-wrap gap-x-8 gap-y-4 justify-center'>
         {posts.length > 0 &&
           posts.map((post) => {
-            const imageContent = post.content.find(
-              (content) => content.type === 'image',
-            );
-            const textContent = post.content.find(
-              (content) => content.type === 'text',
-            );
-            const textValue = textContent ? textContent.value : '';
-
             return (
               <Link key={post._id} href={`/posts/${post.author}/${post._id}`}>
                 <PostItem post={post} />
@@ -83,7 +71,7 @@ function PostList({ loggedInUserId, blogUserId }) {
         {pageNumbers.map((number) => (
           <Link
             key={number}
-            href={`/posts/${blogUserId}/?page=${number}&limit=${limit}`}
+            href={`/posts/${userId}/?page=${number}&limit=${limit}`}
             passHref
           >
             <button

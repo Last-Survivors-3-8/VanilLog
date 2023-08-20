@@ -1,12 +1,11 @@
-import mongoose from 'mongoose';
 import createError from 'http-errors';
 import { NextResponse } from 'next/server';
 
 import dbConnect from '@lib/dbConnect';
 import Post from '@models/Post';
-import { ERROR_MESSAGES, ERROR_CODES } from '@utils/errors';
+import { ERRORS } from '@utils/errors';
 import { sendErrorResponse } from '@utils/response';
-import { validateUserId } from '@utils/validateUserId';
+import { validateObjectId } from '@utils/validateObjectId';
 
 /**
  * 포스트 목록 조회 API
@@ -15,9 +14,6 @@ import { validateUserId } from '@utils/validateUserId';
  */
 async function GET(request) {
   await dbConnect();
-  const successResponse = {
-    status: 'success',
-  };
 
   try {
     const { searchParams } = new URL(request.url);
@@ -26,13 +22,13 @@ async function GET(request) {
     const limit = searchParams.get('limit');
 
     if (userId) {
-      validateUserId(userId);
+      validateObjectId(userId);
     }
 
     if (!page || !limit) {
       throw createError(
-        ERROR_CODES.MISSING_PARAMETERS,
-        ERROR_MESSAGES.MISSING_PARAMETERS,
+        ERRORS.MISSING_PARAMETERS.STATUS_CODE,
+        ERRORS.MISSING_PARAMETERS.MESSAGE,
       );
     }
     const findOption = userId ? { author: userId } : {};
@@ -40,15 +36,55 @@ async function GET(request) {
       skip: (page - 1) * limit,
       limit,
     }).exec();
-    successResponse.data = posts;
 
     const totalPosts = await Post.countDocuments(findOption);
-    successResponse.totalPosts = totalPosts;
 
-    return NextResponse.json(successResponse);
+    return NextResponse.json({
+      status: 'success',
+      data: posts,
+      totalPosts: totalPosts,
+    });
   } catch (error) {
     return sendErrorResponse(error);
   }
 }
 
-export { GET };
+/**
+ * 포스트 생성 API
+ * @URL /api/v1/posts
+ * @param request
+ */
+async function POST(request) {
+  await dbConnect();
+
+  try {
+    const { title, content, author } = await request.json();
+
+    if (!title || !content || !author) {
+      throw createError(
+        ERRORS.MISSING_PARAMETERS.STATUS_CODE,
+        ERRORS.MISSING_PARAMETERS.MESSAGE,
+      );
+    }
+
+    validateObjectId(author);
+
+    const post = new Post({
+      title,
+      author,
+      content,
+    });
+
+    await post.save();
+
+    return NextResponse.json({
+      status: 'success',
+      data: post,
+      totalPosts: totalPosts,
+    });
+  } catch (error) {
+    return sendErrorResponse(error);
+  }
+}
+
+export { GET, POST };

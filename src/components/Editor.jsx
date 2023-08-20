@@ -6,15 +6,22 @@ import axios from 'axios';
 import EditorJS from '@editorjs/editorjs';
 import ImageTool from '@editorjs/image';
 
-function Editor({ title }) {
+function Editor({
+  author,
+  postId,
+  title,
+  content,
+  saveError,
+  setSaveError,
+  isEditing,
+}) {
   const ref = useRef(null);
   const router = useRouter();
-
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const editor = new EditorJS({
       holder: 'editorjs',
+      data: content,
       tools: {
         image: {
           class: ImageTool,
@@ -36,50 +43,60 @@ function Editor({ title }) {
         ref.current.destroy();
       }
     };
-  }, []);
+  }, [content]);
 
   const postSave = () => {
     if (ref.current) {
       ref.current
         .save()
         .then((outputData) => {
-          const content = outputData.blocks.map((block) => {
-            return {
-              type: block.type,
-              value: block.data,
-            };
-          });
-
           const postData = {
             title: title,
-            author: '60d021446bbf4b001c8917e9',
-            content: content,
+            author: author,
+            content: outputData,
           };
 
-          axios
-            .post('/api/v1/posts', postData)
-            .then((response) => {
-              router.push('/');
-            })
-            .catch((error) => {
-              setError('저장에 실패하였습니다. 다시 시도해주세요.');
-            });
+          if (isEditing) {
+            axios
+              .put(`/api/v1/posts/${postId}`, postData)
+              .then((response) => {
+                router.push('/');
+              })
+              .catch((error) => {
+                setSaveError('수정에 실패하였습니다. 다시 시도해주세요.');
+              });
+          } else {
+            axios
+              .post('/api/v1/posts', postData)
+              .then((response) => {
+                router.push('/');
+              })
+              .catch((error) => {
+                setSaveError('저장에 실패하였습니다. 다시 시도해주세요.');
+              });
+          }
         })
         .catch((error) => {
-          setError('저장에 실패하였습니다. 다시 시도해주세요.');
+          setSaveError('저장에 실패하였습니다. 다시 시도해주세요.');
         });
     }
   };
 
   return (
-    <div>
-      <div id='editorjs' />
-      <div className='border-t-2 border-gray-300'>
-        <button onClick={postSave} className='w-full bg-gray-200'>
+    <>
+      <div className='border-2 border-black my-4'>
+        <div id='editorjs' />
+      </div>
+      <div>
+        <button
+          onClick={postSave}
+          className='text-xl text-white font-bold bg-[#0044ff] rounded-lg hover:bg-[#0000ff] py-2 px-8 w-full'
+        >
           Save
         </button>
       </div>
-    </div>
+      <div className='text-red-700 p-4'>{saveError}</div>
+    </>
   );
 }
 
