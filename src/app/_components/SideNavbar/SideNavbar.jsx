@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ProfileBox } from './Profilebox';
-import { StatisticsBox } from './StatisticsBox';
+import { StatisticsBox } from '@src/app/_components/SideNavbar/StatisticsBox';
 import { BurgerMenu } from './BurgerMenu';
 import axios from 'axios';
+import { ProfileBox } from '@src/app/_components/SideNavbar/ProfileBox';
 
 function SideNavbar() {
   const { data } = useSession();
