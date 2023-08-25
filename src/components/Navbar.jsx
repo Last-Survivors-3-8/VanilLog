@@ -31,8 +31,8 @@ function Navbar() {
         </Link>
         {status === 'unauthenticated' ? (
           <>
-            <Link href='/auth/login' className='ml-4'>
-              로그인
+            <Link id='loginButton' href='/auth/login' className='ml-4'>
+              <button>로그인</button>
             </Link>
             <p className='ml-4'>내 블로그</p>
           </>

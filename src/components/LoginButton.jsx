@@ -9,6 +9,7 @@ function LoginButton({ loginCompany }) {
   return (
     <div>
       <button
+        id='googleLoginButton'
         onClick={handleSignIn}
         className='text-xl text-white font-bold bg-[#0044ff] rounded-lg hover:bg-[#0000ff] py-2 px-8'
       >
