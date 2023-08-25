@@ -6,11 +6,11 @@ import { useUserProfile } from '@utils/useUserProfile';
 import { useImageUpload } from '@utils/useImageUpload';
 import { useNicknameUpdate } from '@utils/useNicknameUpdate';
 
-import ProfileImageUploader from '@src/components/Profile/ProfileImageUploader';
-import NicknameEditor from '@src/components/Profile/NicknameEditor';
-import BlogLink from '@src/components/Profile/BlogLink';
-import ConnectedSocial from '@src/components/Profile/ConnecterSocial';
-import BlogStatistics from '@src/components/Profile/BlogStatistics';
+import ProfileImageUploader from '@src/app/components/Profile/ProfileImageUploader';
+import NicknameEditor from '@src/app/components/Profile/NicknameEditor';
+import BlogLink from '@src/app/components/Profile/BlogLink';
+import ConnectedSocial from '@src/app/components/Profile/ConnecterSocial';
+import BlogStatistics from '@src/app/components/Profile/BlogStatistics';
 
 export default function ProfilePage({ params }) {
   const [isEditingNickname, setIsEditingNickname] = useState(false);
