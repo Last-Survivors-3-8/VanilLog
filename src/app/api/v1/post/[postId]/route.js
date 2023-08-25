@@ -104,7 +104,7 @@ async function PUT(request) {
     let { title, content } = parsedData;
     title = DOMPurify.sanitize(title);
     if (!content || !content.blocks || !Array.isArray(content.blocks)) {
-      throw new Error(ERRORS.MISSING_POST_FIELDS.MESSAGE);
+      throw new Error(ERRORS.MISSING_PARAMETERS.MESSAGE);
     }
 
     content.blocks = content.blocks.map((block) => {
