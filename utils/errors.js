@@ -1,8 +1,3 @@
-const INVALID_USER_ID = {
-  STATUS_CODE: 401,
-  MESSAGE: 'userId 형식이 일치하지 않습니다.',
-};
-
 const INVALID_JSON = {
   STATUS_CODE: 400,
   MESSAGE: '요청한 JSON 형식이 유효하지 않습니다.',
@@ -30,17 +25,7 @@ const MISSING_NICKNAME = {
 
 const MISSING_PARAMETERS = {
   STATUS_CODE: 400,
-  MESSAGE: '조회에 필요한 파라미터가 부족합니다.',
-};
-
-const POST_NOT_FOUND = {
-  STATUS_CODE: 404,
-  MESSAGE: '해당 포스트를 찾을 수 없습니다.',
-};
-
-const SIGNED_URL_CREATION_ERROR = {
-  STATUS_CODE: '500',
-  MESSAGE: 'signed URL 생성 오류입니다.',
+  MESSAGE: '필요한 파라미터가 부족합니다.',
 };
 
 const FILE_NOT_FOUND = {
@@ -51,6 +36,11 @@ const FILE_NOT_FOUND = {
 const USER_NOT_LOGGED_IN = {
   STATUS_CODE: 401,
   MESSAGE: '해당 포스트의 작성자일 경우 로그인 후 이용 가능합니다.',
+};
+
+const INVALID_MONGODB_ID = {
+  STATUS_CODE: 401,
+  MESSAGE: 'userId 형식이 일치하지 않습니다.',
 };
 
 const COMMENT_USER_NOT_LOGGED_IN = {
@@ -73,8 +63,18 @@ const UNAUTHORIZED_USER = {
   MESSAGE: '자신의 프로필만 조회할 수 있습니다.',
 };
 
+const POST_NOT_FOUND = {
+  STATUS_CODE: 404,
+  MESSAGE: '해당 포스트를 찾을 수 없습니다.',
+};
+
+const SIGNED_URL_CREATION_ERROR = {
+  STATUS_CODE: '500',
+  MESSAGE: 'signed URL 생성 오류입니다.',
+};
+
 export const ERRORS = {
-  INVALID_USER_ID,
+  INVALID_MONGODB_ID,
   INVALID_JSON,
   USER_NOT_FOUND,
   DUPLICATE_NICKNAME,
