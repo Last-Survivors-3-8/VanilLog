@@ -1,5 +1,5 @@
-import PostDetail from '@src/app/components/PostDetail/PostDetail';
-import CommentsContainer from '@src/app/components/Comment/CommentsContainer';
+import PostDetail from '@src/app/_components/PostDetail/PostDetail';
+import CommentsContainer from '@src/app/_components/Comment/CommentsContainer';
 import { METAINFO } from '@utils/metaInfo';
 import axios from 'axios';
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 
-const Editor = dynamic(() => import('@src/app/components/Editor'), {
+const Editor = dynamic(() => import('@src/app/_components/Editor'), {
   ssr: false,
 });
 

@@ -1,4 +1,4 @@
-import { PostList } from '@src/app/components/PostList/PostList';
+import { PostList } from '@src/app/_components/PostList/PostList';
 import { METAINFO } from '@utils/metaInfo';
 
 export const metadata = {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useComments } from '@utils/useComment';
-import CommentsSection from '@src/app/components/Comment/CommentsSection';
+import CommentsSection from '@src/app/_components/Comment/CommentsSection';
 
 function CommentsContainer({ postId }) {
   const {
