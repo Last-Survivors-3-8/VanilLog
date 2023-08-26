@@ -8,6 +8,8 @@ import { ERRORS } from '@utils/errors';
 import { sendErrorResponse } from '@utils/response';
 import { validateObjectId } from '@utils/validateObjectId';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * 포스트 생성 API
  * @URL /api/v1/post
