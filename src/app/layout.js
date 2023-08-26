@@ -1,6 +1,8 @@
 import { AuthSession } from './AuthSession';
 import './globals.css';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: { default: 'VanilLog' },
   description: { default: 'VanilLog post page' },
