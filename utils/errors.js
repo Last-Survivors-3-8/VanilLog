@@ -3,14 +3,9 @@ const INVALID_JSON = {
   MESSAGE: '요청한 JSON 형식이 유효하지 않습니다.',
 };
 
-const USER_NOT_FOUND = {
-  STATUS_CODE: 404,
-  MESSAGE: '유저 정보가 존재하지 않습니다.',
-};
-
 const DUPLICATE_NICKNAME = {
   STATUS_CODE: 400,
-  MESSAGE: '중복된 닉네임입니다.',
+  MESSAGE: '이미 사용 중인 닉네임입니다.',
 };
 
 const SAME_NICKNAME = {
@@ -35,17 +30,12 @@ const FILE_NOT_FOUND = {
 
 const USER_NOT_LOGGED_IN = {
   STATUS_CODE: 401,
-  MESSAGE: '해당 포스트의 작성자일 경우 로그인 후 이용 가능합니다.',
+  MESSAGE: '로그인 후 이용 가능합니다.',
 };
 
 const INVALID_MONGODB_ID = {
   STATUS_CODE: 401,
   MESSAGE: 'userId 형식이 일치하지 않습니다.',
-};
-
-const COMMENT_USER_NOT_LOGGED_IN = {
-  STATUS_CODE: 401,
-  MESSAGE: '해당 댓글의 작성자일 경우 로그인 후 이용 가능합니다.',
 };
 
 const NOT_POST_AUTHOR = {
@@ -61,6 +51,11 @@ const NOT_COMMENT_AUTHOR = {
 const UNAUTHORIZED_USER = {
   STATUS_CODE: 403,
   MESSAGE: '자신의 프로필만 조회할 수 있습니다.',
+};
+
+const USER_NOT_FOUND = {
+  STATUS_CODE: 404,
+  MESSAGE: '유저 정보가 존재하지 않습니다.',
 };
 
 const POST_NOT_FOUND = {
@@ -84,9 +79,8 @@ export const ERRORS = {
   POST_NOT_FOUND,
   SIGNED_URL_CREATION_ERROR,
   FILE_NOT_FOUND,
-  USER_NOT_LOGGED_IN,
   NOT_POST_AUTHOR,
   NOT_COMMENT_AUTHOR,
   UNAUTHORIZED_USER,
-  COMMENT_USER_NOT_LOGGED_IN,
+  USER_NOT_LOGGED_IN,
 };

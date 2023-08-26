@@ -63,8 +63,8 @@ async function DELETE(request) {
 
     if (!session) {
       throw createError(
-        ERRORS.COMMENT_USER_NOT_LOGGED_IN.STATUS_CODE,
-        ERRORS.COMMENT_USER_NOT_LOGGED_IN.MESSAGE,
+        ERRORS.USER_NOT_LOGGED_IN.STATUS_CODE,
+        ERRORS.USER_NOT_LOGGED_IN.MESSAGE,
       );
     }
 
