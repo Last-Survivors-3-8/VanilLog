@@ -13,6 +13,8 @@ import { getLastPartOfUrl } from '@utils/getLastPartOfUrl';
 import { getSessionFromRequest } from '@utils/getSessionFromRequest';
 import { verifyPostAuthor } from '@utils/verifyPostAuthor';
 
+export const dynamic = 'force-dynamic';
+
 const window = new JSDOM('').window;
 const DOMPurify = createDOMPurify(window);
 

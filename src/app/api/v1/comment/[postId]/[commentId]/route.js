@@ -13,6 +13,8 @@ import { getLastPartOfUrl } from '@utils/getLastPartOfUrl';
 import { getSessionFromRequest } from '@utils/getSessionFromRequest';
 import { isLoggedInUser } from '@utils/isLoggedInUser';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * 댓글 수정 API
  * @URL /api/v1/comment/:postId/:commentId

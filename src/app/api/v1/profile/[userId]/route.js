@@ -10,6 +10,8 @@ import { findById } from '@utils/findById';
 import { getLastPartOfUrl } from '@utils/getLastPartOfUrl';
 import { getSessionFromRequest } from '@utils/getSessionFromRequest';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * 유저 프로필 조회 API
  * @URL /api/v1/profile/:userId
