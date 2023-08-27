@@ -1,5 +1,5 @@
-import { PostList } from '@src/app/_components/PostList/PostList';
 import { METAINFO } from '@utils/metaInfo';
+import { PostList } from './_components/Posts/PostList';
 
 export const metadata = {
   title: METAINFO.HOME.TITLE,

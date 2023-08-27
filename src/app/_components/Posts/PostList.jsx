@@ -5,8 +5,8 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { PostItem } from './PostItem';
 import { postListHref } from '@utils/postListHref';
+import { PostItem } from './PostItem';
 
 function PostList({ blogUserId }) {
   const params = useSearchParams();

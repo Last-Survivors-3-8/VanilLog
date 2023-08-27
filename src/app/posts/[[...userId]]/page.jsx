@@ -1,6 +1,6 @@
-import { PostList } from '@src/app/_components/PostList/PostList';
 import { METAINFO } from '@utils/metaInfo';
 import axios from 'axios';
+import { PostList } from '../../_components/Posts/PostList';
 
 export async function generateMetadata({ params }) {
   const userId = params.userId ? params.userId[0] : '';
