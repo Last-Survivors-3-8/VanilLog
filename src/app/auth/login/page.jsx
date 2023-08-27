@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LoginButton } from '@src/components/LoginButton';
+import { LoginButton } from '@src/app/_components/LoginButton';
 
 function LoginPage() {
   return (

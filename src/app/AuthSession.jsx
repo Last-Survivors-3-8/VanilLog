@@ -1,7 +1,7 @@
 'use client';
 
-import { Navbar } from '@src/components/Navbar';
-import { SideNavbar } from '@src/components/SideNavbar/SideNavbar';
+import { Navbar } from '@src/app/_components/Navbar';
+import { SideNavbar } from '@src/app/_components/SideNavbar/SideNavbar';
 import { SessionProvider } from 'next-auth/react';
 
 function AuthSession({ children }) {
