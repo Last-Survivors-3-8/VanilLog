@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ProfileBox } from './Profilebox';
-import { StatisticsBox } from './StatisticsBox';
+import { ProfileBox } from '@src/components/SideNavbar/ProfileBox';
+import { StatisticsBox } from '@src/components/SideNavbar/StatisticsBox';
 import { BurgerMenu } from './BurgerMenu';
 import axios from 'axios';
 
