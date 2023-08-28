@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import EditorJS from '@editorjs/editorjs';
@@ -26,7 +26,7 @@ function Editor({ author, postId, title, content, error, setError, isModify }) {
             class: ImageTool,
             config: {
               endpoints: {
-                byFile: 'http://localhost:3000/api/v1/image/uploadFile',
+                byFile: `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/image/uploadFile`,
               },
               types: 'image/*',
               captionPlaceholder: 'Enter caption',
