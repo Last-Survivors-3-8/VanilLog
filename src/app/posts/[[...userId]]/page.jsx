@@ -1,6 +1,7 @@
 import { PostList } from '@src/components/Posts/PostList';
 import { METAINFO } from 'constants/metaInfo';
 import axios from 'axios';
+import { PageDivider } from '@src/components/PageDivider';
 
 export async function generateMetadata({ params }) {
   const userId = params.userId ? params.userId[0] : '';
@@ -21,10 +22,11 @@ export async function generateMetadata({ params }) {
 }
 
 export default function Posts({ params }) {
-  const blogUserId = params.userId ? params.userId[0] : '';
+  const userId = params.userId ? params.userId[0] : '';
   return (
     <>
-      <PostList blogUserId={blogUserId} />
+      {userId && <PageDivider blogUserId={userId} />}
+      <PostList blogUserId={userId} />
     </>
   );
 }
