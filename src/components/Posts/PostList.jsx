@@ -5,9 +5,9 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { PostItem } from './PostItem';
-import { postListHref } from '@utils/postListHref';
 import { ERRORS } from 'constants/errors';
+import { Pagination } from './Pagination';
+import { PostsGrid } from './PostsGrid';
 
 function PostList({ blogUserId }) {
   const params = useSearchParams();
@@ -60,9 +60,15 @@ function PostList({ blogUserId }) {
   }, [blogUserId, page, limit, searchValue, searchApi]);
 
   const totalPage = Math.ceil(totalPosts / limit);
+  const currentPage = parseInt(page, 10);
+  const itemsPerPageGroup = 10;
+
+  const startPage =
+    Math.floor((currentPage - 1) / itemsPerPageGroup) * itemsPerPageGroup + 1;
+  const endPage = Math.min(startPage + itemsPerPageGroup - 1, totalPage);
   const pageNumbers = [];
 
-  for (let i = 1; i <= totalPage; i++) {
+  for (let i = startPage; i <= endPage; i++) {
     pageNumbers.push(i);
   }
 
@@ -82,20 +88,7 @@ function PostList({ blogUserId }) {
             </div>
           )}
           {posts.length > 0 ? (
-            <div className='flex justify-center flex-wrap gap-x-8 gap-y-4'>
-              {posts.map((post) => {
-                return (
-                  <div
-                    key={post._id}
-                    className='border-solid border-white border-8 shadow-md'
-                  >
-                    <Link href={`/post/${post.author}/${post._id}`}>
-                      <PostItem post={post} />
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
+            <PostsGrid posts={posts} />
           ) : (
             <div className='flex justify-center items-center h-[50vh]'>
               {searchValue
@@ -103,29 +96,13 @@ function PostList({ blogUserId }) {
                 : '현재 작성된 포스트가 없습니다.'}
             </div>
           )}
-
-          <div className='flex justify-between items-center mt-4'>
-            <div className='flex justify-center flex-grow'>
-              {pageNumbers.map((number) => (
-                <Link
-                  key={number}
-                  href={`/posts/${postListHref(
-                    blogUserId,
-                    searchValue,
-                    number,
-                    limit,
-                  )}`}
-                >
-                  <button
-                    type='button'
-                    className='w-10 h-10 m-0.5 text-xl text-white font-bold bg-[#6B99C3] border-2 border-white border-inherit rounded-full hover:bg-[#16354D] hover:text-[#E4E5EA]'
-                  >
-                    {number}
-                  </button>
-                </Link>
-              ))}
-            </div>
-          </div>
+          <Pagination
+            currentPage={parseInt(page, 10)}
+            totalPage={Math.ceil(totalPosts / limit)}
+            blogUserId={blogUserId}
+            searchValue={searchValue}
+            limit={limit}
+          />
           <div className='flex justify-end mr-4'>
             <button
               style={{
