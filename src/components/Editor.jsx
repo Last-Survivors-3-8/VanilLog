@@ -43,8 +43,18 @@ function Editor({ author, postId, title, content, error, setError, isModify }) {
   const postSave = async () => {
     const outputData = await ref.current.save();
 
+    const imageCount = outputData.blocks.filter(
+      (block) => block.type === 'image',
+    ).length;
+    const maxImageCount = 20;
+
     if (!title || !outputData.blocks.length) {
       setError(ERRORS.TITLE_CONTENT_REQUIRED);
+      return;
+    }
+
+    if (imageCount > maxImageCount) {
+      setError(`최대 ${maxImageCount}개의 이미지만 업로드할 수 있습니다.`);
       return;
     }
 
