@@ -22,6 +22,7 @@ function ProfileBox({ profile, error }) {
                   alt='프로필 사진'
                   layout='fill'
                   priority
+                  loading='lazy'
                 />
               ) : (
                 <Link href={'/auth/login'}>

@@ -28,6 +28,7 @@ function ProfileImageUploader({
             alt='Profile Image'
             layout='fill'
             priority
+            loading='lazy'
           />
         </div>
       </div>

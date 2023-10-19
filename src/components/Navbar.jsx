@@ -70,6 +70,7 @@ function Navbar() {
                       alt='프로필 사진'
                       layout='fill'
                       priority
+                      loading='lazy'
                     />
                   )
                 )}
