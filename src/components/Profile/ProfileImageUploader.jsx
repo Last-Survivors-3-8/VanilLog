@@ -1,21 +1,25 @@
 'use client';
 
+import { useRef } from 'react';
+import { useImageUpload } from '@utils/useImageUpload';
 import Image from 'next/legacy/image';
 
-function ProfileImageUploader({
-  uploadedImage,
-  userProfile,
-  handleImageUpload,
-  inputRef,
-}) {
+function ProfileImageUploader({ userProfile }) {
+  const inputRef = useRef();
+  const { uploadedImage, handleImageUpload, errorMessage } = useImageUpload(
+    userProfile.id,
+  );
+
   return (
     <div className='mb-10 flex flex-col items-center mb-5'>
       <input
         type='file'
-        accept='image/*'
+        accept='image/jpeg, image/png'
         style={{ display: 'none' }}
         ref={inputRef}
-        onChange={handleImageUpload}
+        onChange={(e) => {
+          handleImageUpload(e).catch(console.error);
+        }}
       />
       <div className='rounded-full bg-white p-3 shadow-[0_0_10px_5px rgba(0, 0, 0, 0.3)]'>
         <div className='rounded-full bg-white w-60 h-60 flex flex-col items-center justify-center relative overflow-hidden border-2 border-white'>
@@ -28,7 +32,6 @@ function ProfileImageUploader({
             alt='Profile Image'
             layout='fill'
             priority
-            loading='lazy'
           />
         </div>
       </div>
@@ -38,6 +41,7 @@ function ProfileImageUploader({
       >
         사진 업로드/변경
       </button>
+      {errorMessage && <p className='text-red-600 my-2'>{errorMessage}</p>}
     </div>
   );
 }
