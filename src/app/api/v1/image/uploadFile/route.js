@@ -73,13 +73,31 @@ async function POST(request) {
       );
     }
 
+    const allowedMimeTypes = ['image/jpeg', 'image/png'];
+
+    if (!allowedMimeTypes.includes(file.type)) {
+      throw createError(
+        ERRORS.UNSUPPORTED_FILE_TYPE.STATUS_CODE,
+        ERRORS.UNSUPPORTED_FILE_TYPE.MESSAGE,
+      );
+    }
+
     const fileName = file.name;
     const fileType = file.type;
     const fileStream = file.stream();
     let fileBuffer = Buffer.alloc(0);
 
+    const maxFileSize = 1 * 1024 * 1024;
+
     for await (const chunk of fileStream) {
       fileBuffer = Buffer.concat([fileBuffer, chunk]);
+
+      if (fileBuffer.length > maxFileSize) {
+        throw createError(
+          ERRORS.FILE_TOO_LARGE.STATUS_CODE,
+          ERRORS.FILE_TOO_LARGE.MESSAGE,
+        );
+      }
     }
 
     const optimizedBuffer = await sharp(fileBuffer)
