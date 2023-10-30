@@ -1,12 +1,22 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { ERRORS } from 'constants/errors';
 
 export const useImageUpload = (userId) => {
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
+
     if (!file) return;
+
+    const maxFileSize = 1 * 1024 * 1024;
+
+    if (file.size > maxFileSize) {
+      setErrorMessage(ERRORS.FILE_TOO_LARGE.MESSAGE);
+      return;
+    }
 
     const formData = new FormData();
     formData.append('image', file);
@@ -15,21 +25,18 @@ export const useImageUpload = (userId) => {
       const response = await axios.post('/api/v1/image/uploadFile', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+
       if (response.data && response.data.file) {
         const imageUrl = response.data.file.url;
-
-        const updateResponse = await axios.put(
-          `/api/v1/profile/updateImage/${userId}`,
-          { imageUrl },
-        );
-        if (updateResponse.data && updateResponse.data.status === 200) {
-          setUploadedImage(imageUrl);
-        }
+        setUploadedImage(imageUrl);
+        setErrorMessage('');
       }
     } catch (error) {
-      error;
+      setErrorMessage(
+        error?.response?.data?.message || '업로드에 실패했습니다.',
+      );
     }
   };
 
-  return { uploadedImage, handleImageUpload };
+  return { uploadedImage, handleImageUpload, errorMessage };
 };
