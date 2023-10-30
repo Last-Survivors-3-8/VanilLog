@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import EditorJS from '@editorjs/editorjs';
@@ -10,6 +10,15 @@ import { ERRORS } from 'constants/errors';
 function Editor({ author, postId, title, content, error, setError, isModify }) {
   const ref = useRef(null);
   const router = useRouter();
+  const [uploadError, setUploadError] = useState('');
+  const [showUploadError, setShowUploadError] = useState(false);
+
+  useEffect(() => {
+    if (showUploadError) {
+      const timer = setTimeout(() => setShowUploadError(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showUploadError]);
 
   useEffect(() => {
     const initEditor = async () => {
@@ -29,8 +38,12 @@ function Editor({ author, postId, title, content, error, setError, isModify }) {
               endpoints: {
                 byFile: `/api/v1/image/uploadFile`,
               },
-              types: 'image/*',
+              types: 'image/jpeg, image/png',
               captionPlaceholder: 'Enter caption',
+              onImageUploadError: (error) => {
+                setUploadError('1MB 이하의 이미지만 업로드 가능합니다.');
+                setShowUploadError(true);
+              },
             },
           },
         },
@@ -76,6 +89,11 @@ function Editor({ author, postId, title, content, error, setError, isModify }) {
 
   return (
     <>
+      {showUploadError && (
+        <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-red px-4 py-2 rounded-md text-sm z-50'>
+          {uploadError}
+        </div>
+      )}
       <div className='border-2 border-gray-300 rounded-lg mb-6'>
         <div className='mt-2 ml-6'>
           <div id='editorjs' />
