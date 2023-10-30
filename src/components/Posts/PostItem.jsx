@@ -44,7 +44,6 @@ function PostItem({ post }) {
               src={imageUrl}
               alt={textValue}
               layout='fill'
-              loading='lazy'
             />
           ) : (
             <div className={`w-full h-[170px] ${randomColor}`} />
