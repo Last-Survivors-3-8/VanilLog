@@ -78,6 +78,17 @@ const MISSING_POST_FIELDS = {
   MESSAGE: '포스트 내용이 없습니다.',
 };
 
+const FILE_TOO_LARGE = {
+  STATUS_CODE: 413,
+  MESSAGE: '1MB 이하의 이미지만 업로드 가능합니다.',
+};
+
+const UNSUPPORTED_FILE_TYPE = {
+  STATUS_CODE: 400,
+  MESSAGE:
+    '허용되지 않는 파일 형식입니다. JPG, JPEG, PNG 파일만 업로드 가능합니다.',
+};
+
 const MONGODB_URI_NOT_FOUND =
   'Please define the MONGODB_URI environment variable inside .env';
 
@@ -120,4 +131,6 @@ export const ERRORS = {
   UNKNOWN_ERROR,
   LOGIN_REQUIRED,
   MISSING_POST_FIELDS,
+  FILE_TOO_LARGE,
+  UNSUPPORTED_FILE_TYPE,
 };
