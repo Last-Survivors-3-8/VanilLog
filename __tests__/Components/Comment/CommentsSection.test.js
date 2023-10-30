@@ -32,9 +32,9 @@ const renderCommentsSection = (
 };
 
 describe('<CommentsSection />', () => {
-  let mockOnCommentChange = jest.fn();
-  let mockOnCommentSubmit = jest.fn();
-  let mockErrorMessage = null;
+  const mockOnCommentChange = jest.fn();
+  const mockOnCommentSubmit = jest.fn();
+  const mockErrorMessage = null;
 
   beforeEach(() => {
     useSession.mockReturnValue({ data: { mongoId: 'testUserId' } });
@@ -52,7 +52,7 @@ describe('<CommentsSection />', () => {
     expect(screen.getByText('testCommentContent1')).toBeInTheDocument();
 
     const textarea = screen.getByPlaceholderText('댓글 내용을 입력하세요');
-    const submitButton = screen.getByRole('button', { name: /댓글 작성/i });
+    const submitButton = screen.getByRole('button', { name: '댓글 작성' });
 
     fireEvent.change(textarea, {
       target: { value: 'edited testCommentContent1' },
