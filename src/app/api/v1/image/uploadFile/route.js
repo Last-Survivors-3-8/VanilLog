@@ -3,6 +3,7 @@ import { S3 } from '@aws-sdk/client-s3';
 import createError from 'http-errors';
 import { ERRORS } from 'constants/errors';
 import { sendErrorResponse } from '@utils/response';
+import sharp from 'sharp';
 
 export const dynamic = 'force-dynamic';
 
@@ -72,19 +73,42 @@ async function POST(request) {
       );
     }
 
+    const allowedMimeTypes = ['image/jpeg', 'image/png'];
+
+    if (!allowedMimeTypes.includes(file.type)) {
+      throw createError(
+        ERRORS.UNSUPPORTED_FILE_TYPE.STATUS_CODE,
+        ERRORS.UNSUPPORTED_FILE_TYPE.MESSAGE,
+      );
+    }
+
     const fileName = file.name;
     const fileType = file.type;
     const fileStream = file.stream();
     let fileBuffer = Buffer.alloc(0);
 
+    const maxFileSize = 1 * 1024 * 1024;
+
     for await (const chunk of fileStream) {
       fileBuffer = Buffer.concat([fileBuffer, chunk]);
+
+      if (fileBuffer.length > maxFileSize) {
+        throw createError(
+          ERRORS.FILE_TOO_LARGE.STATUS_CODE,
+          ERRORS.FILE_TOO_LARGE.MESSAGE,
+        );
+      }
     }
+
+    const optimizedBuffer = await sharp(fileBuffer)
+      .resize({ width: 500 })
+      .jpeg({ quality: 80 })
+      .toBuffer();
 
     const s3Params = {
       Bucket: bucketName,
       Key: fileName,
-      Body: fileBuffer,
+      Body: optimizedBuffer,
       ContentType: fileType,
       ACL: 'public-read',
     };
@@ -98,7 +122,7 @@ async function POST(request) {
       file: {
         url: fileUrl,
         name: fileName,
-        size: fileBuffer.length,
+        size: optimizedBuffer.length,
       },
     });
   } catch (error) {
